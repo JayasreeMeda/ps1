@@ -1,0 +1,41 @@
+ps1 - Research Notes
+Jayasree, DataMan Py, 2026-09-23
+
+MOTIVATION
+Population is one of the simplest headline numbers about a country, yet the world is far from evenly split. A handful of giants hold most of humanity. This ps takes a quick look at how lopsided the distribution is, checks whether two independent sources agree, and pairs it with a small US health-survey sample to see how skew shows up inside one country too.
+
+RESEARCH QUESTIONS
+1. How is population distributed across countries: dominated by a few giants, or spread out fairly evenly?
+2. Do Wikipedia (UN table) and the World Bank API roughly agree on the ranking of the largest countries?
+3. Inside the US, do age and household-income (poverty ratio) differ between men and women in a small NHANES slice?
+
+HYPOTHESES
+H1: Population is heavily right-skewed. Mean is much larger than median because China, India, and the US dominate.
+H2: Wikipedia and the World Bank agree closely on the top ranks. Small gaps come from year and methodology.
+H3: In a 50-person random NHANES draw, age and poverty ratio differ only modestly across genders.
+
+UNIT OF ANALYSIS
+Datasets 1 and 2 (HTML, JSON): one row = one country.
+Dataset 3 (SAS): one row = one NHANES survey respondent.
+Primary unit: country.
+
+DATASETS
+1. HTML: Wikipedia, "List of countries by population (UN)"
+   https://en.wikipedia.org/wiki/List_of_countries_by_population_(United_Nations)
+   Top 50 kept. Cols: country, population, change_pct, region.
+
+2. JSON: World Bank population indicator (SP.POP.TOTL), 2022
+   https://api.worldbank.org/v2/country/all/indicator/SP.POP.TOTL?format=json&date=2022&per_page=400
+   ~200 sovereign countries. Cols: country, iso3, population.
+
+3. SAS xpt: CDC NHANES 2021-2023 Demographics (DEMO_L)
+   https://wwwn.cdc.gov/Nchs/Data/Nhanes/Public/2021/DataFiles/DEMO_L.xpt
+   Random sample of 50 respondents. Cols: id, gender, age, race, poverty_ratio.
+
+WHY THESE DATASETS
+Small, public, and free to redistribute. Three different formats (HTML, JSON, SAS xpt) as the assignment requires. Population is intuitive so the stats are easy to interpret; NHANES adds a person-level view without extra complexity.
+
+LIMITATIONS
+- Top-50 slice on the Wikipedia table hides the long tail of small countries.
+- 50-person NHANES sample is too small for real inference; proper analysis would use survey weights (WTINT2YR).
+- No fuzzy country-name matching between Wikipedia and World Bank. Kept simple on purpose.
